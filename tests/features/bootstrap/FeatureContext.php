@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -59,5 +60,55 @@ class FeatureContext extends RawMinkContext implements Context
         if ($realNotification->getHtml()!=$notification) {
             throw new \Exception("notification does not match the expected");
         }
+    }
+
+    /**
+     * @Given I am logged in as an admin
+     */
+    public function iAmLoggedInAsAnAdmin()
+    {
+        $this->iLoginWithUsernameAndPassword("admin","mypass");
+    }
+
+    /**
+     * @When I goto Add a New Article
+     */
+    public function iGotoAddaNewArticle()
+    {
+        $this->getSession()->getPage()->find('xpath','//a[@href="admin.php?action=newArticle"]')->click();
+    }
+
+    /**
+     * @Given I fill in the following details
+     */
+    public function iFillTheFollowingDetails(TableNode $table)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I save the changes
+     */
+    public function iSaveTheChanges()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the article should be listed
+     */
+    public function theArticleShouldBeListed()
+    {
+        throw new PendingException();
+    }
+
+    
+
+    /**
+     * @Given I am on the New Article page
+     */
+    public function iAmOnThePage()
+    {
+        throw new PendingException();
     }
 }
