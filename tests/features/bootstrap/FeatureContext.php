@@ -66,7 +66,7 @@ class FeatureContext extends RawMinkContext implements Context
      * @Given I am logged in as an admin
      */
     public function iAmLoggedInAsAnAdmin()
-    {
+    {   $this->visitPath("/admin.php");
         $this->iLoginWithUsernameAndPassword("admin","mypass");
     }
 
