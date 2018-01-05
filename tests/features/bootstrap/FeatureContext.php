@@ -58,7 +58,7 @@ class FeatureContext extends RawMinkContext implements Context
     {
         $realNotification = $this->getSession()->getPage()->find('xpath', '//div[@class="errorMessage"]');
         if ($realNotification->getHtml()!=$notification) {
-            throw new \Exception("notification does nthrow new PendingException();ot match the expected");
+            throw new \Exception("notification does not match the expected");
         }
     }
 
