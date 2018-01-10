@@ -13,13 +13,13 @@ So that I can edit my articles
 		Given I am on the login page
 		When I login with username "admin" and password "invalid"
 		Then I should be redirected to the page with the title "Admin Login | Widget News"
-		And a notification should be displayed with the text "Incorrect username or password. Please try again."
+		And an error message should be displayed with the text "Incorrect username or password. Please try again."
 
 	Scenario: login with username that does not exist
 		Given I am on the login page
 		When I login with username "adddiii" and password "mypass"
 		Then I should be redirected to the page with the title "Admin Login | Widget News"
-		And a notification should be displayed with the text "Incorrect username or password. Please try again."
+		And an error message should be displayed with the text "Incorrect username or password. Please try again."
 
 	Scenario: login with empty password
 		Given I am on the login page

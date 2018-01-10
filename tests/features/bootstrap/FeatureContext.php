@@ -52,13 +52,13 @@ class FeatureContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then a notification should be displayed with the text :notification
+     * @Then an error message should be displayed with the text :errorMessage
      */
-    public function aNotificationShouldBeDisplayedWithTheText($notification)
+    public function anErrorMessageShouldBeDisplayedWithTheText($errorMessage)
     {
-        $realNotification = $this->getSession()->getPage()->find('xpath', '//div[@class="errorMessage"]');
-        if ($realNotification->getHtml()!=$notification) {
-            throw new \Exception("notification does not match the expected");
+        $realErrorMessage = $this->getSession()->getPage()->find('xpath', '//div[@class="errorMessage"]');
+        if ($realErrorMessage->getHtml()!=$errorMessage) {
+            throw new \Exception("error message does not match the expected");
         }
     }
 
@@ -111,4 +111,15 @@ class FeatureContext extends RawMinkContext implements Context
     {
         throw new PendingException();
     }
+    /**
+     * @Then a notification should be displayed with the text :notification
+     */
+    public function aNotificationShouldBeDisplayedWithTheText($notification)
+    {
+    	$realNotification = $this->getSession()->getPage()->find('xpath', '//div[@class="statusMessage"]');
+    	if ($realNotification->getHtml()!=$notification) {
+    		throw new \Exception("notification does not match the expected");
+    	}
+    }
+    
 }
