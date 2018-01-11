@@ -119,14 +119,15 @@ class FeatureContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then the article with the title :title should be listed.
+     * @Then the article with the title :title should be listed
      */
     public function theArticleShouldBeListed($title)
     {
         $titleElement = $this->getSession()->getPage()->find('xpath', '//td[text()[normalize-space()="'.$title.'"]]');
-        if (trim($titleElement->getHtml()) !=$title) 
+        if($titleElement === NULL)
         {
-            throw new \Exception("Title does not match the expected");
+            throw new \Exception("Article does not exist");
         }
+
     }
 }
