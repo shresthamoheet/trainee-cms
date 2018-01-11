@@ -49,7 +49,7 @@ class FeatureContext extends RawMinkContext implements Context
         if ($titleElement->getHtml()!=$title) {
             throw new \Exception("title does not match the expected");
         }
-    }
+       }
 
     /**
      * @Then an error message should be displayed with the text :errorMessage
@@ -83,34 +83,30 @@ class FeatureContext extends RawMinkContext implements Context
      */
     public function iFillTheFollowingDetails(TableNode $table)
     {
-        throw new PendingException();
+        $page=$this->getSession()->getPage();
+        $tableArray = $table->getColumnsHash();
+        $page->fillField("title",$tableArray[0]["title"]);
+        $page->fillField("summary", $tableArray[0]["summary"]);
+        $page->fillField("content", $tableArray[0]["content"]);
+        $page->fillField("publicationDate", $tableArray[0]["date"]);
     }
-
     /**
      * @Given I save the changes
      */
     public function iSaveTheChanges()
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then the article should be listed
-     */
-    public function theArticleShouldBeListed()
-    {
-        throw new PendingException();
-    }
-
-    
-
+     $page=$this->getSession()->getPage();
+     $page->find('xpath', '//div/input[@name="saveChanges"]')->click();
+     }
+     
     /**
      * @Given I am on the New Article page
      */
-    public function iAmOnThePage()
+    public function iAmOnTheNewArticlePage()
     {
-        throw new PendingException();
+        $this->visitPath("/admin.php?action=newArticle");
     }
+
     /**
      * @Then a notification should be displayed with the text :notification
      */
@@ -121,5 +117,16 @@ class FeatureContext extends RawMinkContext implements Context
     		throw new \Exception("notification does not match the expected");
     	}
     }
-    
+
+    /**
+     * @Then the article with the title :title should be listed.
+     */
+    public function theArticleShouldBeListed($title)
+    {
+        $titleElement = $this->getSession()->getPage()->find('xpath', '//td[text()[normalize-space()="'.$title.'"]]');
+        if (trim($titleElement->getHtml()) !=$title) 
+        {
+            throw new \Exception("Title does not match the expected");
+        }
+    }
 }
