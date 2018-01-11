@@ -61,7 +61,6 @@ class FeatureContext extends RawMinkContext implements Context
             throw new \Exception("error message does not match the expected");
         }
     }
-
     /**
      * @Given I am logged in as an admin
      */
@@ -69,7 +68,6 @@ class FeatureContext extends RawMinkContext implements Context
     {   $this->visitPath("/admin.php");
         $this->iLoginWithUsernameAndPassword("admin","mypass");
     }
-
     /**
      * @When I goto Add a New Article
      */
@@ -98,7 +96,6 @@ class FeatureContext extends RawMinkContext implements Context
      $page=$this->getSession()->getPage();
      $page->find('xpath', '//div/input[@name="saveChanges"]')->click();
      }
-     
     /**
      * @Given I am on the New Article page
      */
@@ -117,7 +114,7 @@ class FeatureContext extends RawMinkContext implements Context
     		throw new \Exception("notification does not match the expected");
     	}
     }
-
+    
     /**
      * @Then the article with the title :title should be listed
      */
@@ -129,5 +126,67 @@ class FeatureContext extends RawMinkContext implements Context
             throw new \Exception("Article does not exist");
         }
 
+    }
+
+    /**
+     * @When I open the article with the title :title
+     */
+    public function iOpenTheArticleWithTheTitle($title)
+    {
+       $this->getSession()->getPage()->find("xpath",'//td[text()[normalize-space() = "'.$title.'"]]')->click();
+    }
+    
+    /**
+     * @Then I click the delete link
+     */
+    public function iClickTheDeleteLink()
+    {
+        $this->getSession()->getPage()->find('xpath','//a[contains(text(),"Delete")]')->click();
+    }
+    /**
+     * @Then A message box must appear with the message :comment
+     */
+    public function aMessageBoxMustAppearWithTheMessage($comment)
+    {
+        $message = $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        if ($message!==$comment) {
+            throw new \Exception("message does not match the expected");
+        }
+    }
+    /**
+     * @When I confirm the delete action
+     */
+    public function iConfirmTheDeleteAction()
+    {
+        $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
+    }
+    /**
+     * @Then a message should be displayed with the text :message
+     */
+    public function aMessageShouldBeDisplayedWithTheText($message)
+    {
+        $realMessage = $this->getSession()->getPage()->find('xpath', '//div[@class="statusMessage"]');
+        if ($realMessage->getHtml()!==$message) {
+            throw new \Exception("notification does not match the expected");
+        }
+    }
+    /**
+     * @Then the article with the title :title should not be listed
+     */
+    public function theArticleWithTheTitleShouldNotBeListed($title)
+    {
+       $titleField=$this->getSession()->getPage()->find("xpath",'//td[text()[normalize-space() = "'.$title.'"]]');
+       if ($titleField!==null) {
+           throw new \Exception("The article with the $title is not supposed to be listed but is listed");
+       }
+    }
+    /**
+     * @Given an article with the following details exists
+     */
+    public function anArticleWithTheFollowingDetailsExists(TableNode $table)
+    {
+        $this->iAmOnTheNewArticlePage();
+        $this->iFillTheFollowingDetails($table);
+        $this->iSaveTheChanges();
     }
 }
