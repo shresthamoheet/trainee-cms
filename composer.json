@@ -1,8 +1,9 @@
 {
-		"require-dev" : {
+	"require-dev" : {
 		"behat/mink-extension" : "^2.2",
 		"behat/mink-goutte-driver" : "^1.2",
 		"behat/mink-selenium2-driver" : "dev-master",
-		"behat/behat" : "^3.0"
+		"behat/behat" : "^3.0",
+		"squizlabs/php_codesniffer": "3.*"
 	}
 }
