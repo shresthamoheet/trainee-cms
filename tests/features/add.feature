@@ -18,10 +18,10 @@ So that I can give extra information to the user
 		|<title>|<summary>|<content>|<date>|
 		And I save the changes
 		Then I should be redirected to the page with the title "All Articles"
-		And the article with the title "<title>" should be listed
+		And the article with the title "<title>" and date "<displaydate>" should be listed
 		And a notification should be displayed with the text "Your changes have been saved."
 		Examples:
-		|title|summary|content      |date       |
-		|artur|ram kills rawan|main characters are ram, laxman, sita and ravan|12/02/1971|
-		|Bible|Jesus  |Died on cross| 01/01/1969|
+		|title|summary|content      |date       |displaydate|
+		|test234|ram kills rawan|main characters are ram, laxman, sita and ravan|02/03/1971|3 Feb 1971|
+		| Flood|Terai  |10 people Died | 01/01/1969 |1 Jan 1969 |
 
