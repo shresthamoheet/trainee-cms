@@ -16,4 +16,4 @@ So that I can correct or update articles
 		|new-title|ram kills rawan|main characters are ram, laxman, sita and ravan|12/02/1972|
 		And I save the changes
 		Then a message should be displayed with the text "Your changes have been saved."
-		And the article with the title "new-title" should be listed
+		And the article with the title "new-title" and date "2 Dec 1972" should be listed
