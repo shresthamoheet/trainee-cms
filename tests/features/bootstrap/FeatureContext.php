@@ -1,25 +1,31 @@
 <?php
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\LoginPage;
+
+require_once 'bootstrap.php';
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext extends RawMinkContext implements Context 
-{
-    /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
-     */
-    public function __construct()
-    {
-    }
+class FeatureContext extends RawMinkContext implements Context {
+	protected $loginPage;
+	
+	/**
+	 * Initializes context.
+	 *
+	 * Every scenario gets its own context instance.
+	 * You can also pass arbitrary arguments to the
+	 * context constructor through behat.yml.
+	 * 
+	 * @param LoginPage $loginPage
+	 * @return void
+	 */
+	public function __construct(LoginPage $loginPage) {
+		$this->loginPage = $loginPage;
+	}
 
     /**
      * @Given I am on the login page
@@ -28,17 +34,17 @@ class FeatureContext extends RawMinkContext implements Context
     {
         $this->visitPath("/admin.php");
     }
-
-    /**
-     * @When I login with username :user and password :passwd
-     */
-    public function iLoginWithUsernameAndPassword($user, $passwd)
-    {
-        $page=$this->getSession()->getPage();
-        $page->fillField("username", $user);
-        $page->fillField("password", $passwd);
-        $page->find('xpath', '//div/input[@name="login"]')->click();
-    }
+	
+	/**
+	 * @When I login with username :user and password :passwd
+	 * 
+	 * @param string $user
+	 * @param string $passwd
+	 * @return void
+	 */
+	public function iLoginWithUsernameAndPassword($user, $passwd) {
+		$this->loginPage->loginAs($user, $passwd);
+	}
 
     /**
      * @Then I should be redirected to the page with the title :title
@@ -50,20 +56,23 @@ class FeatureContext extends RawMinkContext implements Context
             throw new \Exception("title does not match the expected");
         }
        }
-
+	
+	/**
+	 * @Then an error message should be displayed with the text :errorMessage
+	 * 
+	 * @param string $errorMessage
+	 * @return void
+	 */
+	public function anErrorMessageShouldBeDisplayedWithTheText($errorMessage) {
+		$error = $this->loginPage->getErrorMessage();
+		if ($error !== $errorMessage) {
+			throw new \Exception("error message does not match the expected");
+		}
+	}
+    
     /**
-     * @Then an error message should be displayed with the text :errorMessage
-     */
-    public function anErrorMessageShouldBeDisplayedWithTheText($errorMessage)
-    {
-        $realErrorMessage = $this->getSession()->getPage()->find('xpath', '//div[@class="errorMessage"]');
-        if ($realErrorMessage->getHtml()!=$errorMessage) {
-            throw new \Exception("error message does not match the expected");
-        }
-    }
-    /**
-     * @Given I am logged in as an admin
-     */
+    * @Given I am logged in as an admin
+    */
     public function iAmLoggedInAsAnAdmin()
     {   $this->visitPath("/admin.php");
         $this->iLoginWithUsernameAndPassword("admin","mypass");
