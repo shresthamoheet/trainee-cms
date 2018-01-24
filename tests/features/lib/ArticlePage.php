@@ -9,12 +9,12 @@ namespace Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
- * PageObject for the Add Article Page
+ * PageObject for the Article Page
  * 
  * @author Trainee <jankaritech@gmail.com>
  *
  */
-class AddArticlePage extends Page {
+class ArticlePage extends Page {
 	protected $xpathOfSave = '//div/input[@name="saveChanges"]';
 	protected $xpathOfCancel = '//div/input[@name="cancel"]';
 	protected $xpathOfSiteAdmin = '//a[@href="admin.php"]';
@@ -25,7 +25,7 @@ class AddArticlePage extends Page {
 	 * 
 	 * @return void
 	 */
-	function addTitle($title) {
+	function setTitle($title) {
 		$this->fillField("title", $title);
 	}
 	/**
@@ -34,7 +34,7 @@ class AddArticlePage extends Page {
 	 * 
 	 * @return void
 	 */
-	function addSummary($summary) {
+	function setSummary($summary) {
 		$this->fillField("summary", $summary);
 	}
 	/**
@@ -43,7 +43,7 @@ class AddArticlePage extends Page {
 	 * 
 	 * @return void
 	 */
-	function addContent($content) {
+	function setContent($content) {
 		$this->fillField("content", $content);
 	}
 	/**
@@ -52,7 +52,7 @@ class AddArticlePage extends Page {
 	 * 
 	 * @return void
 	 */
-	function addDate($date) {
+	function setDate($date) {
 		$this->fillField("publicationDate", $date);
 	}
 	/**
