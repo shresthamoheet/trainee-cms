@@ -4,7 +4,8 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
-use Page\AddArticlePage;
+use Page\ArticlePage;
+use Page\EditArticlePage;
 
 require_once 'bootstrap.php';
 
@@ -13,7 +14,13 @@ require_once 'bootstrap.php';
  */
 class FeatureContext extends RawMinkContext implements Context {
 	protected $loginPage;
-	protected $addArticlePage;
+	
+	/**
+	 * 
+	 * @var ArticlePage $articlePage
+	 */
+	protected $articlePage;
+	protected $editPage;
 	/**
 	 * Initializes context.
 	 *
@@ -22,12 +29,14 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * context constructor through behat.yml.
 	 *
 	 * @param LoginPage $loginPage
-	 * @param AddArticlePage $addArticle
+	 * @param ArticlePage $articlePage
+	 * @param EditArticlePage $editPage
 	 * @return void
 	 */
-	public function __construct(LoginPage $loginPage, AddArticlePage $addArticle) {
+	public function __construct(LoginPage $loginPage, ArticlePage $articlePage, EditArticlePage $editPage) {
 		$this->loginPage = $loginPage;
-		$this->addArticlePage = $addArticle;
+		$this->articlePage = $articlePage;
+		$this->editPage = $editPage;
 	}
 
     /**
@@ -97,10 +106,10 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function iFillTheFollowingDetails(TableNode $table) {
 		$tableArray = $table->getColumnsHash();
-		$this->addArticlePage->addTitle($tableArray[0]["title"]);
-		$this->addArticlePage->addSummary($tableArray[0]["summary"]);
-		$this->addArticlePage->addContent($tableArray[0]["content"]);
-		$this->addArticlePage->addDate($tableArray[0]["date"]);
+		$this->articlePage->setTitle($tableArray[0]["title"]);
+		$this->articlePage->setSummary($tableArray[0]["summary"]);
+		$this->articlePage->setContent($tableArray[0]["content"]);
+		$this->articlePage->setDate($tableArray[0]["date"]);
 	}
 	/**
 	 * @Given I save the changes
@@ -108,7 +117,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iSaveTheChanges() {
-		$this->addArticlePage->save();
+		$this->articlePage->save();
 	}
 	/**
 	 * @Given I am on the New Article page
@@ -154,24 +163,33 @@ class FeatureContext extends RawMinkContext implements Context {
     {
        $this->getSession()->getPage()->find("xpath",'//td[text()[normalize-space() = "'.$title.'"]]')->click();
     }
-    
-    /**
-     * @Then I click the delete link
-     */
-    public function iClickTheDeleteLink()
-    {
-        $this->getSession()->getPage()->find('xpath','//a[contains(text(),"Delete")]')->click();
-    }
-    /**
-     * @Then A message box must appear with the message :comment
-     */
-    public function aMessageBoxMustAppearWithTheMessage($comment)
-    {
-        $message = $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
-        if ($message!==$comment) {
-            throw new \Exception("message does not match the expected");
-        }
-    }
+
+	/**
+	 * @Then I click the delete link
+	 * 
+	 * @return void
+	 */
+	public function iClickTheDeleteLink() {
+		$this->editPage->deleteArticle();
+	}
+
+	/**
+	 * @Then A message box must appear with the message :comment
+	 *
+	 * @param string $comment
+	 *
+	 * @return void
+	 */
+	public function aMessageBoxMustAppearWithTheMessage($comment) {
+		$message = $this->getSession()
+			->getDriver()
+			->getWebDriverSession()
+			->getAlert_text();
+		if ($message !== $comment) {
+			throw new \Exception("message does not match the expected");
+		}
+	}
+	
     /**
      * @When I confirm the delete action
      */
