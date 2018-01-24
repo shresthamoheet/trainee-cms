@@ -4,6 +4,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
+use Page\AddArticlePage;
 
 require_once 'bootstrap.php';
 
@@ -12,19 +13,21 @@ require_once 'bootstrap.php';
  */
 class FeatureContext extends RawMinkContext implements Context {
 	protected $loginPage;
-	
+	protected $addArticlePage;
 	/**
 	 * Initializes context.
 	 *
 	 * Every scenario gets its own context instance.
 	 * You can also pass arbitrary arguments to the
 	 * context constructor through behat.yml.
-	 * 
+	 *
 	 * @param LoginPage $loginPage
+	 * @param AddArticlePage $addArticle
 	 * @return void
 	 */
-	public function __construct(LoginPage $loginPage) {
+	public function __construct(LoginPage $loginPage, AddArticlePage $addArticle) {
 		$this->loginPage = $loginPage;
+		$this->addArticlePage = $addArticle;
 	}
 
     /**
@@ -77,41 +80,44 @@ class FeatureContext extends RawMinkContext implements Context {
     {   $this->visitPath("/admin.php");
         $this->iLoginWithUsernameAndPassword("admin","mypass");
     }
-    /**
-     * @When I goto Add a New Article
-     */
-    public function iGotoAddaNewArticle()
-    {
-        $this->getSession()->getPage()->find('xpath','//a[@href="admin.php?action=newArticle"]')->click();
-    }
-
-    /**
-     * @Given I fill in the following details
-     */
-    public function iFillTheFollowingDetails(TableNode $table)
-    {
-        $page=$this->getSession()->getPage();
-        $tableArray = $table->getColumnsHash();
-        $page->fillField("title",$tableArray[0]["title"]);
-        $page->fillField("summary", $tableArray[0]["summary"]);
-        $page->fillField("content", $tableArray[0]["content"]);
-        $page->fillField("publicationDate", $tableArray[0]["date"]);
-    }
-    /**
-     * @Given I save the changes
-     */
-    public function iSaveTheChanges()
-    {
-     $page=$this->getSession()->getPage();
-     $page->find('xpath', '//div/input[@name="saveChanges"]')->click();
-     }
-    /**
-     * @Given I am on the New Article page
-     */
-    public function iAmOnTheNewArticlePage()
-    {
-        $this->visitPath("/admin.php?action=newArticle");
-    }
+	/**
+	 * @When I goto Add a New Article
+	 * 
+	 * @return void
+	 */
+	public function iGotoAddaNewArticle() {
+		$this->getSession()->getPage()->find('xpath', '//a[@href="admin.php?action=newArticle"]')->click();
+	}
+	
+	/**
+	 * @Given I fill in the following details
+	 * 
+	 * @param TableNode $table
+	 * @return void
+	 */
+	public function iFillTheFollowingDetails(TableNode $table) {
+		$tableArray = $table->getColumnsHash();
+		$this->addArticlePage->addTitle($tableArray[0]["title"]);
+		$this->addArticlePage->addSummary($tableArray[0]["summary"]);
+		$this->addArticlePage->addContent($tableArray[0]["content"]);
+		$this->addArticlePage->addDate($tableArray[0]["date"]);
+	}
+	/**
+	 * @Given I save the changes
+	 * 
+	 * @return void
+	 */
+	public function iSaveTheChanges() {
+		$this->addArticlePage->save();
+	}
+	/**
+	 * @Given I am on the New Article page
+	 * 
+	 * @return void
+	 */
+	public function iAmOnTheNewArticlePage() {
+		$this->visitPath("/admin.php?action=newArticle");
+	}
 
     /**
      * @Then a notification should be displayed with the text :notification
