@@ -7,6 +7,7 @@ use Page\LoginPage;
 use Page\ArticlePage;
 use Page\EditArticlePage;
 use Page\CMSPage;
+use Page\AdminPage;
 
 require_once 'bootstrap.php';
 
@@ -22,6 +23,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	protected $articlePage;
 	protected $editPage;
+	protected $adminPage;
 	/**
 	 * Initializes context.
 	 *
@@ -32,12 +34,14 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @param LoginPage $loginPage
 	 * @param ArticlePage $articlePage
 	 * @param EditArticlePage $editPage
+	 * @param AdminPage $adminPage
 	 * @return void
 	 */
-	public function __construct(LoginPage $loginPage, ArticlePage $articlePage, EditArticlePage $editPage) {
+	public function __construct(LoginPage $loginPage, ArticlePage $articlePage, EditArticlePage $editPage, AdminPage $adminPage) {
 		$this->loginPage = $loginPage;
 		$this->articlePage = $articlePage;
 		$this->editPage = $editPage;
+		$this->adminPage = $adminPage;
 	}
 
 	/**
@@ -102,7 +106,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iGotoAddaNewArticle() {
-		$this->getSession()->getPage()->find('xpath', '//a[@href="admin.php?action=newArticle"]')->click();
+		$this->adminPage->addNewArticle();
 	}
 	
 	/**
