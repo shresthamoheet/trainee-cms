@@ -9,7 +9,8 @@ namespace Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
- * PageObject for the CMSPage
+ * PageObject for the common functions and methods 
+ * 
  *
  * @author Trainee <jankaritech@gmail.com>
  *
