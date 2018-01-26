@@ -19,6 +19,7 @@ class LoginPage extends CMSPage {
 	protected $userInputBoxName = "username";
 	protected $passwordInputBoxName = "password";
 	protected $errorMessageXpath = '//div[@class="errorMessage"]';
+	protected $path = '/admin.php';
 	
 	/**
 	 *
