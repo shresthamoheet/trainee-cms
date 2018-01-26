@@ -140,17 +140,6 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
     /**
-     * @Then a notification should be displayed with the text :notification
-     */
-    public function aNotificationShouldBeDisplayedWithTheText($notification)
-    {
-    	$realNotification = $this->getSession()->getPage()->find('xpath', '//div[@class="statusMessage"]');
-    	if ($realNotification->getHtml()!=$notification) {
-    		throw new \Exception("notification does not match the expected");
-    	}
-    }
-    
-    /**
      * @Then the article with the title :title and date :date should be listed
      */
     public function theArticleShouldBeListed($title,$date)
@@ -211,16 +200,20 @@ class FeatureContext extends RawMinkContext implements Context {
     {
         $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
     }
-    /**
-     * @Then a message should be displayed with the text :message
-     */
-    public function aMessageShouldBeDisplayedWithTheText($message)
-    {
-        $realMessage = $this->getSession()->getPage()->find('xpath', '//div[@class="statusMessage"]');
-        if ($realMessage->getHtml()!==$message) {
-            throw new \Exception("notification does not match the expected");
-        }
-    }
+
+	/**
+	 * @Then a message should be displayed with the text :message
+	 * 
+	 * @param string $message
+	 * 
+	 * @return void
+	 */
+	public function aMessageShouldBeDisplayedWithTheText($message) {
+		$realMessage = $this->loginPage->getStatusMessage();
+		if ($realMessage !== $message) {
+			throw new \Exception("notification does not match the expected");
+		}
+	}
     /**
      * @Then the article with the title :title should not be listed
      */
