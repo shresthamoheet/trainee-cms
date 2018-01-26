@@ -166,14 +166,17 @@ class FeatureContext extends RawMinkContext implements Context {
             throw new \Exception("Expected article with title does not exist");
         }
     }
-
-    /**
-     * @When I open the article with the title :title
-     */
-    public function iOpenTheArticleWithTheTitle($title)
-    {
-       $this->getSession()->getPage()->find("xpath",'//td[text()[normalize-space() = "'.$title.'"]]')->click();
-    }
+	
+	/**
+	 * @When I open the article with the title :title
+	 * 
+	 * @param string $title
+	 * 
+	 * @return void
+	 */
+	public function iOpenTheArticleWithTheTitle($title) {
+		$this->adminPage->openArticle($title);
+	}
 
 	/**
 	 * @Then I click the delete link
