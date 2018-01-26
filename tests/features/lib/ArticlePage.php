@@ -6,15 +6,15 @@
  */
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Page\CMSPage;
 
 /**
- * PageObject for the Article Page
+ * PageObject for the ArticlePage
  * 
  * @author Trainee <jankaritech@gmail.com>
  *
  */
-class ArticlePage extends Page {
+class ArticlePage extends CMSPage {
 	protected $xpathOfSave = '//div/input[@name="saveChanges"]';
 	protected $xpathOfCancel = '//div/input[@name="cancel"]';
 	protected $xpathOfSiteAdmin = '//a[@href="admin.php"]';

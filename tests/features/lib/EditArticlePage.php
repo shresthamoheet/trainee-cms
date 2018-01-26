@@ -7,7 +7,7 @@
 namespace Page;
 
 /**
- * PageObject for the LoginPage
+ * PageObject for the EditArticlePage
  *
  * @author Trainees <jankaritechtrainee@gmail.com>
  *

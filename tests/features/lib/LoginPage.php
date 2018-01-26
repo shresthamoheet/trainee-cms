@@ -6,7 +6,7 @@
  */
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Page\CMSPage;
 
 /**
  * PageObject for the LoginPage
@@ -14,7 +14,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @author sushil <sushilkc1997@gmail.com>
  *
  */
-class LoginPage extends Page {
+class LoginPage extends CMSPage {
 	protected $loginBtnXpath = '//div/input[@name="login"]';
 	protected $userInputBoxName = "username";
 	protected $passwordInputBoxName = "password";
