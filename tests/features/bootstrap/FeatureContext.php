@@ -6,6 +6,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\ArticlePage;
 use Page\EditArticlePage;
+use Page\CMSPage;
 
 require_once 'bootstrap.php';
 
@@ -59,16 +60,19 @@ class FeatureContext extends RawMinkContext implements Context {
 		$this->loginPage->loginAs($user, $passwd);
 	}
 
-    /**
-     * @Then I should be redirected to the page with the title :title
-     */
-    public function iShouldBeRedirectedToThePageWithTheTitle($title)
-    {
-        $titleElement = $this->getSession()->getPage()->find('xpath', '//title');
-        if ($titleElement->getHtml()!=$title) {
-            throw new \Exception("title does not match the expected");
-        }
-       }
+	/**
+	 * @Then I should be redirected to the page with the title :title
+	 * 
+	 * @param string $title
+	 * 
+	 * @return void
+	 */
+	public function iShouldBeRedirectedToThePageWithTheTitle($title) {
+		$titleElement = $this->articlePage->getPageTitle();
+		if ($titleElement->getHtml() != $title) {
+			throw new \Exception("title does not match the expected");
+		}
+	}
 	
 	/**
 	 * @Then an error message should be displayed with the text :errorMessage

@@ -17,4 +17,13 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class CMSPage extends Page{
 	
+	protected $xpathOfPageTitle = '//title';
+	
+	/**
+	 * 
+	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 */
+	function getPageTitle() {
+		return $this->find('xpath', $this->xpathOfPageTitle);
+	}
 }
