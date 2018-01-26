@@ -39,13 +39,14 @@ class FeatureContext extends RawMinkContext implements Context {
 		$this->editPage = $editPage;
 	}
 
-    /**
-     * @Given I am on the login page
-     */
-    public function iAmOnTheLoginPage()
-    {
-        $this->visitPath("/admin.php");
-    }
+	/**
+	 * @Given I am on the login page
+	 * 
+	 * @return void
+	 */
+	public function iAmOnTheLoginPage() {
+		$this->loginPage->open();
+	}
 	
 	/**
 	 * @When I login with username :user and password :passwd
@@ -81,14 +82,16 @@ class FeatureContext extends RawMinkContext implements Context {
 			throw new \Exception("error message does not match the expected");
 		}
 	}
-    
-    /**
-    * @Given I am logged in as an admin
-    */
-    public function iAmLoggedInAsAnAdmin()
-    {   $this->visitPath("/admin.php");
-        $this->iLoginWithUsernameAndPassword("admin","mypass");
-    }
+
+	/**
+	 * @Given I am logged in as an admin
+	 * 
+	 * @return void
+	 */
+	public function iAmLoggedInAsAnAdmin() {
+		$this->loginPage->open();
+		$this->iLoginWithUsernameAndPassword("admin", "mypass");
+	}
 	/**
 	 * @When I goto Add a New Article
 	 * 
